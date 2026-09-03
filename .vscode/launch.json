@@ -1,0 +1,60 @@
+{
+    "version": "0.2.0",
+    "compounds": [
+        {
+            "name": "Saki Debug",
+            "configurations": [
+                "Saki Debug Build", 
+            ],
+        },
+        {
+            "name": "Saki Release",
+            "configurations": [
+                "Saki Release Build", 
+            ],
+        }
+    ],
+    "configurations": [
+        {
+            "name": "Saki Debug Build",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/saki",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopOnEntry": false,
+            "preLaunchTask": "build saki debug",
+            "sourceLanguages": ["rust"],
+            "env": {
+                "RUST_BACKTRACE": "full",
+                "RUST_LOG": "debug",
+                "INTERNAL_API_KEY": "test-internal-api-key",
+                "SAKURA_REGISTRATION_KEY": "sakura-key",
+            },
+        },
+        {
+            "name": "Saki Release Build",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/release/saki",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopOnEntry": false,
+            "preLaunchTask": "build saki release",
+            "sourceLanguages": ["rust"],
+            "env": {
+                "RUST_LOG": "debug",
+                "INTERNAL_API_KEY": "test-internal-api-key",
+                "SAKURA_REGISTRATION_KEY": "sakura-key",
+            },
+        },
+        {
+            "name": "Run cargo clippy (fix)",
+            "request": "launch",
+            "type": "node", // dummy type to satisfy VS Code
+            "runtimeExecutable": "echo",
+            "runtimeArgs": ["Running clippy..."],
+            "preLaunchTask": "cargo clippy fix"
+        }
+    ]
+}

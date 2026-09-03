@@ -1,0 +1,28 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "build saki debug",
+        "type": "shell",
+        "command": "cargo build -p saki",
+        "group": "build",
+        "problemMatcher": ["$rustc"]
+      },
+      {
+        "label": "build saki release",
+        "type": "shell",
+        "command": "cargo build --release -p saki",
+        "group": "build",
+        "problemMatcher": ["$rustc"]
+      },
+      {
+        "label": "cargo clippy fix",
+        "type": "shell",
+        "command": "cargo clippy --all-targets --all-features --fix --allow-dirty --allow-staged",
+        "group": "build",
+        "problemMatcher": [
+            "$rustc"
+        ]
+      }
+    ],
+}
