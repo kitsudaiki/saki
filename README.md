@@ -22,9 +22,7 @@ by creating new nodes and connections between the nodes while learning new data.
 concept was created by myself, merged with classical deep-learning and the code was written from
 scratch without any frameworks. The goal behind Saki is to create something unique, which works
 more like the human brain. It wasn't targeted to get a higher accuracy than classical artificial
-neural networks like Tensorflow, but to be more flexible and easier to use and more efficient in
-resource-consumption for big amounts of inputs and users. Additionally it also provides an
-as-a-Service architecture within a cloud native environment and multi-tenancy.
+neural networks like Tensorflow, but to be more flexible.
 
 ## Current experimal and prototypically implemented features:
 
@@ -64,20 +62,12 @@ as-a-Service architecture within a cloud native environment and multi-tenancy.
     never tested until now. Maybe in bigger tests in the future this feature could become useful to
     better mix information with each other.
 
-- **Rust as programming language for the backend without unsafe**
-
-    Even the project started with C++ as primary programming language until v0.7.0, the whole backend
-    is now written in Rust without unsafe code and use `#![forbid(unsafe_code)]` to prevent the
-    usage of unsafe. Based on `cargo geiger` many used dependencies sadly still use much unsafe
-    code, but at least in this repository here no unsafe code is added.
-
 - **Parallelism**
 
     The processing structure works also for multiple threads, which can work at the same time on the
     same network. (GPU-support with CUDA is disabled at the moment for various reasons).
 
-
-## How to build
+## Getting Started
 
 - Create and activate a virtual environment
 
@@ -97,3 +87,36 @@ as-a-Service architecture within a cloud native environment and multi-tenancy.
   ```bash
   maturin develop
   ```
+
+- Run example-script
+
+    ```python
+    import saki
+
+    # Initialize the class
+    engine = saki.Saki()
+
+    # init model
+    uuid_str = engine.init_default_model()
+
+    # train data
+    training_inputs = {"input": [1.0, 2.5, 3.1]}
+    target_outputs = {"output": [0.1, 0.5, 0.9]}
+
+    for i in range(0, 1000):
+        engine.train(uuid_str, training_inputs, target_outputs)
+
+    # make request
+    inputs = {"input": [1.0, 2.5, 3.1]}
+    outputs = {"output": [0.0, 0.0, 0.0]}
+
+    engine.request(uuid_str, inputs, outputs)
+    print(outputs)
+    # Outputs is something like: {'output': [0.13057079911231995, 0.5001742243766785, 0.8688104152679443]}
+
+    # delete model
+    engine.delete_model(uuid_str)
+    ```
+
+  For a more complex example look into the [test.py](test.py)
+  
