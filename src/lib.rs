@@ -34,6 +34,33 @@ pub struct Saki {}
 create_exception!(saki, PySakiError, pyo3::exceptions::PyException);
 
 impl Saki {
+    pub fn init_default_model(&mut self) -> Result<Uuid, SakiError> {
+        let model_uuid = Uuid::new_v4();
+        let model_name = "test_model".to_string();
+
+        let template =
+            "version: 1 \
+            settings: \
+                neuron_cooldown: 1000000000.0; \
+                refractory_time: 1; \
+                max_connection_distance: 1; \
+            hexagons:  \
+                1,2,2;  \
+                2,2,2;  \
+                3,2,2;  \
+            inputs:  \
+                input: 1,2,2;  \
+            outputs:  \
+                output: 3,2,2;";
+
+        let mut root_handler = MODEL_HANDLER.write().expect("mutex poisoned");
+        let mut parsed_model = parse_model_template(&model_name, &template)?;
+        parsed_model.uuid = model_uuid;
+        let _ = root_handler.init_new_model(&model_uuid, &parsed_model);
+
+        Ok(model_uuid)
+    }
+
     pub fn init_model(&mut self, template: String) -> Result<Uuid, SakiError> {
         let model_uuid = Uuid::new_v4();
         let model_name = "test_model".to_string();
@@ -148,6 +175,13 @@ impl Saki {
         drop(model_data_handler);
 
         Saki {}
+    }
+
+    #[allow(unsafe_op_in_unsafe_fn)]
+    #[pyo3(name = "init_default_model")]
+    fn py_init_default_model(&mut self) -> Result<String, PyErr> {
+        let model_uuid = self.init_default_model().map_err(PyErr::from)?;
+        Ok(model_uuid.to_string())
     }
 
     #[allow(unsafe_op_in_unsafe_fn)]
