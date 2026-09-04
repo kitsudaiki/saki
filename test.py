@@ -41,7 +41,6 @@ engine.restore_checkpoint(new_uuid_str, file_path)
 os.remove(file_path)
 
 print("request")
-# Prepare the data
 inputs = {"test_input": [1.0, 2.5, 3.1]}
 outputs = {"test_output": [0.0, 0.0, 0.0]}
 

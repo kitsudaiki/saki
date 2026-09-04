@@ -7,7 +7,6 @@ updates:
       interval: daily
       time: "12:00"
     labels:
-      - "L: Rust"
       - "Env: Dependencies"
     commit-message:
       prefix: "chore(deps)"

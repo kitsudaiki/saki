@@ -38,8 +38,7 @@ impl Saki {
         let model_uuid = Uuid::new_v4();
         let model_name = "test_model".to_string();
 
-        let template =
-            "version: 1 \
+        let template = "version: 1 \
             settings: \
                 neuron_cooldown: 1000000000.0; \
                 refractory_time: 1; \
@@ -54,7 +53,7 @@ impl Saki {
                 output: 3,2,2;";
 
         let mut root_handler = MODEL_HANDLER.write().expect("mutex poisoned");
-        let mut parsed_model = parse_model_template(&model_name, &template)?;
+        let mut parsed_model = parse_model_template(&model_name, template)?;
         parsed_model.uuid = model_uuid;
         let _ = root_handler.init_new_model(&model_uuid, &parsed_model);
 
